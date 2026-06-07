@@ -9,6 +9,10 @@ A portfolio-ready SaaS dashboard built with Next.js, TypeScript, Tailwind, shadc
 - Protected dashboard layout
 - `user` and `admin` roles through the `profiles.role` field
 - Customer table with create/delete CRUD
+- Searchable CRM account directory and account workspaces
+- Contact management and primary contacts
+- Sales pipeline with drag-and-drop and weighted forecast
+- Activity timelines and customer follow-up tasks
 - Revenue metrics and charts with Recharts
 - Subscription page with Stripe Checkout
 - Stripe Customer Portal launcher
@@ -56,6 +60,14 @@ supabase/migrations/202606060001_productionize_customer_policies.sql
 
 It replaces recursive role policies, allows admins to manage customer rows, and prevents users from updating their own role column.
 
+Then run the CRM migration:
+
+```text
+supabase/migrations/202606070001_add_customer_operations_crm.sql
+```
+
+This adds account health fields, contacts, pipeline stages, deals, activities, tasks, indexes, RLS policies, default stages, contact backfill, and the CRM metrics RPC.
+
 To promote a portfolio account to admin:
 
 ```sql
@@ -97,4 +109,17 @@ The detailed requirements and implementation plan are tracked in:
 
 ```text
 openspec/changes/productionize-customer-operations/
+openspec/changes/add-customer-operations-crm/
 ```
+
+## CRM Portfolio Flow
+
+Public visitors can explore a connected CRM story without registering:
+
+1. Review SaaS and CRM metrics on Overview.
+2. Search and filter Accounts.
+3. Open an account to inspect contacts, deals, activities, and follow-up tasks.
+4. Move deals through Pipeline stages.
+5. Complete overdue work in the Tasks queue.
+
+Demo changes are stored only in that browser. Authenticated owners use Supabase and the same interface.

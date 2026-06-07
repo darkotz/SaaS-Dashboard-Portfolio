@@ -90,3 +90,7 @@ create policy "subscriptions are readable by owner"
 
 create index customers_owner_id_idx on public.customers(owner_id);
 create index subscriptions_customer_idx on public.subscriptions(stripe_customer_id);
+
+-- Apply supabase/migrations/202606070001_add_customer_operations_crm.sql
+-- after this base schema to add the CRM account, contact, pipeline,
+-- activity, and task model.

@@ -1,12 +1,13 @@
 import { ShieldCheck, UserCog } from "lucide-react";
+import { DemoReset } from "@/components/crm/demo-reset";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { demoProfile } from "@/lib/demo-data";
-import { getCurrentProfile } from "@/lib/supabase/queries";
+import { getCurrentProfile, isDemoVisitor } from "@/lib/supabase/queries";
 
 export default async function AdminPage() {
-  const profile = await getCurrentProfile();
+  const [profile, demoMode] = await Promise.all([getCurrentProfile(), isDemoVisitor()]);
   const canAdmin = profile?.role === "admin";
 
   return (
@@ -62,6 +63,7 @@ export default async function AdminPage() {
           )}
         </CardContent>
       </Card>
+      {demoMode ? <DemoReset /> : null}
     </div>
   );
 }

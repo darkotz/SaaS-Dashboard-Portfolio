@@ -1,18 +1,19 @@
-import { CustomerManager } from "@/components/customers/customer-manager";
-import { getCustomers, isDemoVisitor } from "@/lib/supabase/queries";
+import { AccountDirectory } from "@/components/crm/account-directory";
+import { getCrmSnapshot } from "@/lib/crm/queries";
+import { isDemoVisitor } from "@/lib/supabase/queries";
 
 export default async function CustomersPage() {
-  const [customers, demoMode] = await Promise.all([getCustomers(), isDemoVisitor()]);
+  const [snapshot, demoMode] = await Promise.all([getCrmSnapshot(), isDemoVisitor()]);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-normal">Customers</h1>
+        <h1 className="text-3xl font-semibold tracking-normal">Accounts</h1>
         <p className="mt-1 text-muted-foreground">
-          Manage customer accounts with immediate feedback and production-safe permissions.
+          Search customer relationships, revenue context, health, and open work.
         </p>
       </div>
-      <CustomerManager initialCustomers={customers} demoMode={demoMode} />
+      <AccountDirectory initialSnapshot={snapshot} demoMode={demoMode} />
     </div>
   );
 }

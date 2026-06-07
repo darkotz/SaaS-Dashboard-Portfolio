@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BarChart3, CreditCard, LayoutDashboard, LogIn, LogOut, Shield, Table2 } from "lucide-react";
+import { BarChart3, BriefcaseBusiness, Building2, CreditCard, LayoutDashboard, ListTodo, LogIn, LogOut, Shield } from "lucide-react";
 import { signOut } from "@/app/(dashboard)/actions";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -8,8 +8,10 @@ import { getViewer } from "@/lib/supabase/queries";
 import { initials } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/customers", label: "Customers", icon: Table2 },
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { href: "/customers", label: "Accounts", icon: Building2 },
+  { href: "/pipeline", label: "Pipeline", icon: BriefcaseBusiness },
+  { href: "/tasks", label: "Tasks", icon: ListTodo },
   { href: "/subscription", label: "Billing", icon: CreditCard },
   { href: "/admin", label: "Admin", icon: Shield }
 ];
@@ -78,6 +80,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
             )}
           </div>
         </header>
+        <nav className="flex gap-1 overflow-x-auto border-b bg-white px-3 py-2 lg:hidden">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+              <item.icon className="h-4 w-4" />{item.label}
+            </Link>
+          ))}
+        </nav>
         <main className="px-4 py-6 lg:px-8">{children}</main>
       </div>
     </div>

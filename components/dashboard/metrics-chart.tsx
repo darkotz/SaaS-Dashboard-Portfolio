@@ -11,8 +11,8 @@ export function MetricsCharts() {
     <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
       <Card>
         <CardHeader>
-          <CardTitle>Revenue trend</CardTitle>
-          <CardDescription>MRR and churn across the current portfolio quarter.</CardDescription>
+          <CardTitle>Subscription revenue trend</CardTitle>
+          <CardDescription>MRR remains separate from pipeline and weighted forecast.</CardDescription>
         </CardHeader>
         <CardContent className="h-80">
           <ResponsiveContainer width="100%" height="100%">
