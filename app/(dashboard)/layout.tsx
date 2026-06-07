@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { BarChart3, CreditCard, LayoutDashboard, LogOut, Shield, Table2 } from "lucide-react";
+import { BarChart3, CreditCard, LayoutDashboard, LogIn, LogOut, Shield, Table2 } from "lucide-react";
 import { signOut } from "@/app/(dashboard)/actions";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getCurrentProfile } from "@/lib/supabase/queries";
+import { getViewer } from "@/lib/supabase/queries";
 import { initials } from "@/lib/utils";
 
 const navItems = [
@@ -16,11 +15,7 @@ const navItems = [
 ];
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const profile = await getCurrentProfile();
-
-  if (!profile) {
-    redirect("/login");
-  }
+  const { profile, demoMode } = await getViewer();
 
   return (
     <div className="min-h-screen bg-background">
@@ -62,15 +57,25 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-background/92 px-4 backdrop-blur lg:px-8">
           <div>
             <p className="text-sm font-semibold">{profile.company}</p>
-            <p className="text-xs text-muted-foreground">Protected workspace</p>
+            <p className="text-xs text-muted-foreground">{demoMode ? "Portfolio preview" : "Protected workspace"}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Badge variant={profile.role === "admin" ? "success" : "secondary"}>{profile.role}</Badge>
-            <form action={signOut}>
-              <Button size="icon" variant="ghost" type="submit" aria-label="Log out">
-                <LogOut className="h-4 w-4" />
+            <Badge variant={demoMode ? "secondary" : profile.role === "admin" ? "success" : "secondary"}>
+              {demoMode ? "demo" : profile.role}
+            </Badge>
+            {demoMode ? (
+              <Button asChild size="icon" variant="ghost">
+                <Link href="/login" aria-label="Owner sign in">
+                  <LogIn className="h-4 w-4" />
+                </Link>
               </Button>
-            </form>
+            ) : (
+              <form action={signOut}>
+                <Button size="icon" variant="ghost" type="submit" aria-label="Log out">
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </form>
+            )}
           </div>
         </header>
         <main className="px-4 py-6 lg:px-8">{children}</main>

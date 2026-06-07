@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { env, hasStripeEnv } from "@/lib/env";
-import { getCurrentProfile } from "@/lib/supabase/queries";
+import { getCurrentProfile, isDemoVisitor } from "@/lib/supabase/queries";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
 
@@ -42,6 +42,10 @@ async function getOrCreateStripeCustomer(userId: string, email: string, name: st
 }
 
 export async function createCheckoutSession() {
+  if (await isDemoVisitor()) {
+    redirect("/subscription?demo=stripe");
+  }
+
   const profile = await getCurrentProfile();
   const stripe = getStripe();
 
@@ -75,6 +79,10 @@ export async function createCheckoutSession() {
 }
 
 export async function createCustomerPortalSession() {
+  if (await isDemoVisitor()) {
+    redirect("/subscription?demo=portal");
+  }
+
   const profile = await getCurrentProfile();
   const stripe = getStripe();
   const supabase = createSupabaseAdminClient();

@@ -26,7 +26,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Sign in</CardTitle>
-            <CardDescription>Use Supabase auth, or enter anything in demo mode.</CardDescription>
+            <CardDescription>Owner access for managing the live Supabase workspace.</CardDescription>
           </CardHeader>
           <CardContent>
             {params.error ? <p className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{params.error}</p> : null}
@@ -43,12 +43,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                 Login
               </Button>
             </form>
-            <p className="mt-5 text-center text-sm text-muted-foreground">
-              New here?{" "}
-              <Link className="font-medium text-primary" href="/register">
-                Create an account
-              </Link>
-            </p>
+            <Button asChild className="mt-3 w-full" variant="outline">
+              <Link href="/dashboard">View portfolio demo</Link>
+            </Button>
           </CardContent>
         </Card>
       </section>
